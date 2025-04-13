@@ -8,12 +8,13 @@ const p3 = document.querySelector("#p3");
 const p4 = document.querySelector("#p4");
 const p5 = document.querySelector("#p5");
 const p6 = document.querySelector("#p6");
+const p7 = document.querySelector("#p7"); 
 
 prevBtn.addEventListener("click", prevPage);
 nextBtn.addEventListener("click", nextPage);
 
 let currentLocation = 1;
-let maxLocation = 7; 
+let maxLocation = 8; 
 
 function openBook() {
     book.style.transform = "translateX(50%)";
@@ -56,16 +57,25 @@ function nextPage() {
                 p5.classList.add("flipped");
                 p5.style.zIndex = 5;
                 break;
-            case 6:
-                
-                p6.classList.add("flipped");
-                p6.style.zIndex = 6;
-                closeBook(false);
-                break;
-            default:
-                break;
+                case 6:
+                    p6.classList.add("flipped");
+                    p6.style.zIndex = 6;
+                    break;
+                case 7:
+                    p7.classList.add("flipped");
+                    p7.style.zIndex = 7; // New page's z-index
+                    closeBook(false);
+                    break;
+                default:
+                    break;
         }
         currentLocation++;
+        if (currentLocation === 3) {
+            makeRainColorful();
+        } else if (currentLocation === 1 || currentLocation === 2) {
+            makeRainWhite();
+        }
+        
     }
 }
 
@@ -93,17 +103,25 @@ function prevPage() {
                 p5.classList.remove("flipped");
                 p5.style.zIndex = 2;
                 break;
-            case 7:
-                p6.classList.remove("flipped");
-                p6.style.zIndex = 1;
-                openBook();
-                break;
-            default:
-                break;
+                case 7:
+                    p6.classList.remove("flipped");
+                    p6.style.zIndex = 1;
+                    break;
+                case 8:
+                    p7.classList.remove("flipped");
+                    p7.style.zIndex = 0; // Reset z-index when moving back
+                    openBook();
+                    break;
+                default:
+                    break;
         }
-        currentLocation--;
-    }
-}
+        currentLocation--;    
+        if (currentLocation === 3) {
+            makeRainColorful();
+        } else if (currentLocation === 1 || currentLocation === 2) {
+            makeRainWhite();
+        }
+}}
 
 function rain(){
     let amount=150;
@@ -124,7 +142,6 @@ function rain(){
         j++;
     }
 }
-
 rain();
 
 
@@ -151,6 +168,71 @@ setInterval(() => {
         createLightning();
     }
 }, 3000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createShootingStar() {
+    const container = document.querySelector('.shooting-star-container');
+    const star = document.createElement('div');
+    star.classList.add('shooting-star');
+
+    // Random starting position at top of screen
+    star.style.top = `${Math.random() * window.innerHeight * 0.5}px`;
+    star.style.left = `${Math.random() * window.innerWidth}px`;
+
+    container.appendChild(star);
+
+    // Remove star after animation completes
+    setTimeout(() => {
+        star.remove();
+    }, 1000);
+}
+
+// Generate shooting stars at random intervals
+// setInterval(() => {
+//     if (Math.random() > 0.1) { // 30% chance every 300ms
+//         createShootingStar();
+//     }
+// }, 300);
+
+
+
+
+
+
+
+function makeRainColorful() {
+    document.querySelectorAll('j').forEach(drop => {
+        const hue = Math.floor(Math.random() * 360);
+        document.querySelectorAll('j').forEach(drop => {
+            const romanticHues = [320, 330, 340, 350, 10, 20, 290, 300, 310]; // soft pinks, purples, and warm reds
+            const hue = romanticHues[Math.floor(Math.random() * romanticHues.length)];
+            drop.style.background = `linear-gradient(transparent, hsl(${hue}, 100%, 70%))`;
+            drop.style.boxShadow = "0 0 1px rgba(255, 255, 255, 0.5)"; // Glow effect
+        })
+        
+    });
+}
+
+function makeRainWhite() {
+    document.querySelectorAll('j').forEach(drop => {
+        drop.style.background = "linear-gradient(transparent, #7dabb175)";
+
+        });
+}
 
 
 
